@@ -1,39 +1,70 @@
 "use client";
 
 import { useState } from "react";
-import { RocketIcon, DocsIcon } from "@/components/icons";
+import {
+  RocketIcon,
+  DocsIcon,
+  FlameIcon,
+  ShieldCheckIcon,
+  TrendingUpIcon,
+} from "@/components/icons";
 
 const SLIDES_COUNT = 4;
+
+const FEATURES = [
+  { icon: FlameIcon, label: "Deflationary Burn", sub: "$BAGUA burned every tx" },
+  { icon: ShieldCheckIcon, label: "Secure & Audited", sub: "Contracts are audited" },
+  { icon: RocketIcon, label: "Launchpad for Memes", sub: "Fair launch platform" },
+  { icon: TrendingUpIcon, label: "Built on Giwa Chain", sub: "Fast, low fees" },
+];
 
 export default function Hero({ onLaunchClick, onDocsClick }) {
   const [slide, setSlide] = useState(0);
 
   return (
-    <section className="relative mx-4 overflow-hidden rounded-2xl card-border bg-bg-panel">
-      <div className="hero-glow pointer-events-none absolute inset-0" />
+    <section className="relative mx-4 overflow-hidden rounded-2xl border border-[#123024] bg-[#050807]">
+      {/* teal glow */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(55% 55% at 78% 25%, rgba(30,230,168,0.28), transparent 70%)",
+        }}
+      />
+      {/* faint candlestick pattern, right edge */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-24 items-end justify-end gap-1 overflow-hidden opacity-20 sm:flex">
+        {[40, 55, 35, 70, 50, 80, 60, 90].map((h, i) => (
+          <span
+            key={i}
+            className="w-2 rounded-sm bg-[#1EE6A8]"
+            style={{ height: `${h}%` }}
+          />
+        ))}
+      </div>
 
       <div className="relative grid gap-6 p-6 sm:grid-cols-2 sm:items-center">
         <div>
           <h1 className="font-display text-3xl font-bold leading-tight text-white sm:text-4xl">
-            Trade. Launch.
+            Trade. <span className="text-[#1EE6A8]">Launch.</span>
             <br />
-            <span className="text-accent-gold">Burn.</span> Grow.
+            <span className="text-[#1EE6A8]">Burn.</span> Grow.
           </h1>
           <p className="mt-3 max-w-sm text-sm text-white/60">
-            Bagua Swap is a DEX & meme coin launchpad on Giwa Chain with a $BAGUA
-            burn mechanism on every transaction.
+            Bagua Swap is a DEX & meme coin launchpad on Giwa Chain with a{" "}
+            <span className="text-[#1EE6A8]">$BAGUA</span> burn mechanism on
+            every transaction.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <button
               onClick={onLaunchClick}
-              className="flex items-center gap-2 rounded-xl bg-accent-gold px-4 py-2.5 text-sm font-semibold text-bg"
+              className="flex items-center gap-2 rounded-xl bg-[#1EE6A8] px-4 py-2.5 text-sm font-semibold text-[#04140F]"
             >
               <RocketIcon width="18" height="18" />
               Launch Your Token
             </button>
             <button
               onClick={onDocsClick}
-              className="flex items-center gap-2 rounded-xl card-border bg-bg-card px-4 py-2.5 text-sm font-semibold text-white/90"
+              className="flex items-center gap-2 rounded-xl border border-[#1EE6A8]/30 bg-[#0B1512] px-4 py-2.5 text-sm font-semibold text-white/90"
             >
               <DocsIcon width="18" height="18" />
               View Docs
@@ -42,33 +73,38 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
         </div>
 
         <div className="relative mx-auto flex h-40 w-40 items-center justify-center sm:h-52 sm:w-52">
-          <div className="absolute inset-0 rounded-full bg-accent-purple/25 blur-2xl" />
-          <svg viewBox="0 0 100 100" className="relative h-full w-full drop-shadow-[0_0_25px_rgba(245,179,36,0.35)]">
-            <polygon
-              points="50,3 84,20 97,50 84,80 50,97 16,80 3,50 16,20"
-              fill="#171123"
-              stroke="#F5B324"
-              strokeWidth="2.5"
-            />
-            <circle cx="50" cy="50" r="30" fill="none" stroke="#F5B324" strokeWidth="2" />
-            <path
-              d="M50 20a15 15 0 0 0 0 30 15 15 0 0 1 0 30 30 30 0 0 1 0-60Z"
-              fill="#F5B324"
-            />
-            <circle cx="50" cy="35" r="3.2" fill="#171123" />
-            <circle cx="50" cy="65" r="3.2" fill="#F5B324" />
-          </svg>
+          <div className="absolute inset-0 rounded-full bg-[#1EE6A8]/25 blur-2xl" />
+          <div className="absolute bottom-0 h-6 w-28 rounded-full bg-[#1EE6A8]/40 blur-xl" />
+          <img
+            src="/logo.png"
+            alt="Bagua Swap"
+            className="relative h-full w-full drop-shadow-[0_0_30px_rgba(30,230,168,0.45)]"
+          />
         </div>
       </div>
 
-      <div className="relative flex justify-center gap-1.5 pb-4">
+      <div className="relative grid grid-cols-2 gap-2 border-t border-[#123024] p-4 sm:grid-cols-4">
+        {FEATURES.map(({ icon: Icon, label, sub }) => (
+          <div key={label} className="flex items-start gap-2 rounded-xl bg-[#0B1512] p-2.5">
+            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1EE6A8]/15 text-[#1EE6A8]">
+              <Icon width="14" height="14" />
+            </span>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold text-white/90">{label}</p>
+              <p className="truncate text-[11px] text-white/40">{sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="relative flex justify-center gap-1.5 pb-4 pt-3">
         {Array.from({ length: SLIDES_COUNT }).map((_, i) => (
           <button
             key={i}
             onClick={() => setSlide(i)}
             aria-label={`Go to slide ${i + 1}`}
             className={`h-1.5 rounded-full transition-all ${
-              i === slide ? "w-5 bg-accent-purple" : "w-1.5 bg-white/20"
+              i === slide ? "w-5 bg-[#1EE6A8]" : "w-1.5 bg-white/20"
             }`}
           />
         ))}
