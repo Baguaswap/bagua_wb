@@ -43,7 +43,7 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
       </div>
 
       <div className="relative grid gap-6 p-6 sm:grid-cols-2 sm:items-center">
-        <div>
+        <div className="relative z-10">
           <h1 className="font-display text-3xl font-bold leading-tight text-white sm:text-4xl">
             Trade. <span className="text-[#1EE6A8]">Launch.</span>
             <br />
@@ -72,16 +72,21 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
           </div>
         </div>
 
-        <div className="relative mx-auto flex h-36 w-52 items-center justify-center sm:h-48 sm:w-72">
-          <div className="absolute inset-0 rounded-full bg-[#1EE6A8]/20 blur-2xl" />
-          <div className="absolute bottom-0 h-6 w-28 rounded-full bg-[#1EE6A8]/40 blur-xl" />
-          <img
-            src="/hero-coin.png"
-            alt="Bagua Swap"
-            className="relative h-full w-full object-contain drop-shadow-[0_0_25px_rgba(30,230,168,0.35)]"
-          />
-        </div>
+        {/* image column kept for grid spacing on desktop; actual art is the full-bleed absolute layer below */}
+        <div className="hidden sm:block" />
       </div>
+
+      {/* full-column background art, sits behind the text */}
+      <img
+        src="/hero-coin.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 right-0 z-0 h-full w-full object-cover object-right opacity-90 sm:w-1/2"
+        style={{
+          maskImage: "linear-gradient(to right, transparent, black 30%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 30%)",
+        }}
+      />
 
       <div className="relative grid grid-cols-2 gap-2 border-t border-[#123024] p-4 sm:grid-cols-4">
         {FEATURES.map(({ icon: Icon, label, sub }) => (
