@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  background: #0a0714;
+  color: #f4f2fb;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hero-glow {
+  background: radial-gradient(60% 60% at 70% 30%, rgba(139, 92, 246, 0.35), transparent 70%);
+}
+
+.card-border {
+  border: 1px solid #241c33;
+}
