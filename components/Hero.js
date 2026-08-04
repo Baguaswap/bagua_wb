@@ -72,13 +72,13 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
           </div>
         </div>
 
-        <div className="relative mx-auto flex h-40 w-40 items-center justify-center sm:h-52 sm:w-52">
-          <div className="absolute inset-0 rounded-full bg-[#1EE6A8]/25 blur-2xl" />
+        <div className="relative mx-auto flex h-36 w-52 items-center justify-center sm:h-48 sm:w-72">
+          <div className="absolute inset-0 rounded-full bg-[#1EE6A8]/20 blur-2xl" />
           <div className="absolute bottom-0 h-6 w-28 rounded-full bg-[#1EE6A8]/40 blur-xl" />
           <img
-            src="/logo.png"
+            src="/hero-coin.png"
             alt="Bagua Swap"
-            className="relative h-full w-full drop-shadow-[0_0_30px_rgba(30,230,168,0.45)]"
+            className="relative h-full w-full object-contain drop-shadow-[0_0_25px_rgba(30,230,168,0.35)]"
           />
         </div>
       </div>
