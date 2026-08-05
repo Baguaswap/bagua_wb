@@ -23,12 +23,12 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
 
   return (
     <section className="relative mx-4 overflow-hidden rounded-2xl border border-[#123024] bg-[#050807]">
-      {/* teal glow */}
+      {/* teal + purple glow */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(55% 55% at 78% 25%, rgba(30,230,168,0.28), transparent 70%)",
+            "radial-gradient(55% 55% at 78% 25%, rgba(30,230,168,0.22), transparent 70%), radial-gradient(45% 50% at 90% 70%, rgba(167,139,250,0.18), transparent 70%)",
         }}
       />
       {/* faint candlestick pattern, right edge */}
@@ -45,9 +45,10 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
       <div className="relative grid gap-6 p-6 sm:grid-cols-2 sm:items-center">
         <div className="relative z-10">
           <h1 className="font-display text-3xl font-bold leading-tight text-white sm:text-4xl">
-            Trade. <span className="text-[#1EE6A8]">Launch.</span>
+            Trade. <span className="text-[#38BDF8]">Launch.</span>
             <br />
-            <span className="text-[#1EE6A8]">Burn.</span> Grow.
+            <span className="text-[#1EE6A8]">Burn.</span>{" "}
+            <span className="text-[#A78BFA]">Grow.</span>
           </h1>
           <p className="mt-3 max-w-sm text-sm text-white/60">
             Bagua Swap is a DEX & meme coin launchpad on Giwa Chain with a{" "}
