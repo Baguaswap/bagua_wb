@@ -12,7 +12,7 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
     <section className="relative mx-4 overflow-hidden rounded-2xl border border-[#123024] bg-[#050807]">
       {/* full wallpaper background */}
       <img
-        src="/hero-banner.jpg"
+        src="/hero-banner.png"
         alt=""
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover"
