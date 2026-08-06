@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import Hero from "@/components/Hero";
-import StatsBar from "@/components/StatsBar";
 import HotLaunchpad from "@/components/HotLaunchpad";
 import BurnStats from "@/components/BurnStats";
 import LatestBurns from "@/components/LatestBurns";
@@ -17,7 +16,6 @@ export default function HomePage() {
         onLaunchClick={() => router.push("/launchpad")}
         onDocsClick={() => router.push("/docs")}
       />
-      <StatsBar />
       <HotLaunchpad />
 
       <section className="mx-4 mt-6 grid gap-3 sm:grid-cols-2">
