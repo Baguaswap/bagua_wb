@@ -1,13 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { RocketIcon, DocsIcon, LockIcon, EthIcon, PlusCircleIcon } from "@/components/icons";
+import {
+  RocketIcon,
+  DocsIcon,
+  LockIcon,
+  EthIcon,
+  PlusCircleIcon,
+  BarChartIcon,
+  FlameIcon,
+} from "@/components/icons";
 import { NETWORKS } from "@/lib/config";
 
-const SLIDES_COUNT = 4;
-
-// Real, live TVL — kept in sync with the number shown in StatsBar below.
-const LIVE_TVL = 12.45;
+// Live protocol stats, now surfaced directly in the hero banner instead of
+// a separate StatsBar section below it.
+const HERO_STATS = [
+  { id: "tvl", label: "TVL", value: 12.45, prefix: "$", suffix: "M", decimals: 2, icon: LockIcon },
+  { id: "volume", label: "Volume (24H)", value: 3.24, prefix: "$", suffix: "M", decimals: 2, icon: BarChartIcon },
+  { id: "burned", label: "Burned $BAGUA", value: 12.34, prefix: "", suffix: "M", decimals: 2, icon: FlameIcon },
+  { id: "launched", label: "Tokens Launched", value: 256, prefix: "", suffix: "", decimals: 0, icon: RocketIcon },
+];
 
 // Orbit nodes are derived from the actually-configured networks so the Hero
 // never advertises a chain the app doesn't support yet. A trailing "more"
@@ -63,20 +75,32 @@ function LiveBadge() {
   );
 }
 
-function TvlChip() {
-  const tvl = useCountUp(LIVE_TVL, 1400);
+function HeroStatCell({ icon: Icon, label, value, prefix, suffix, decimals }) {
+  const animated = useCountUp(value, 1400);
 
   return (
-    <div className="flex items-center gap-2.5 rounded-xl bg-bg-card/90 card-border px-3 py-2 shadow-glow backdrop-blur sm:absolute sm:-right-1 sm:-top-2">
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-purple/15 text-accent-violet">
-        <LockIcon width="16" height="16" />
+    <div className="flex items-center gap-2">
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-purple/15 text-accent-violet">
+        <Icon width="13" height="13" />
       </div>
-      <div>
-        <p className="text-[10px] leading-none text-white/50">Total Value Locked</p>
-        <p className="font-display text-sm font-bold leading-tight text-white">
-          ${tvl.toFixed(2)}M
+      <div className="min-w-0">
+        <p className="truncate text-[9px] leading-none text-white/50">{label}</p>
+        <p className="font-display text-xs font-bold leading-tight text-white sm:text-sm">
+          {prefix}
+          {animated.toFixed(decimals)}
+          {suffix}
         </p>
       </div>
+    </div>
+  );
+}
+
+function HeroStatsPanel() {
+  return (
+    <div className="grid w-full max-w-xs grid-cols-2 gap-x-3 gap-y-3 rounded-xl bg-bg-card/90 card-border p-3 shadow-glow backdrop-blur sm:absolute sm:-right-6 sm:top-2 sm:w-44 sm:max-w-none">
+      {HERO_STATS.map((stat) => (
+        <HeroStatCell key={stat.id} {...stat} />
+      ))}
     </div>
   );
 }
@@ -145,43 +169,45 @@ function OrbitSystem() {
 
 function HeroVisual() {
   return (
-    <div className="relative mx-auto flex h-56 w-56 items-center justify-center sm:h-64 sm:w-64">
-      {/* Layered glow behind the mark */}
-      <div className="animate-hero-pulse-glow absolute inset-0 rounded-full bg-accent-purple/25 blur-2xl" />
-      <div className="absolute inset-6 rounded-full bg-accent-gold/15 blur-2xl" />
+    <div className="relative mx-auto flex max-w-xs flex-col items-center gap-4 sm:max-w-none">
+      <div className="relative flex h-56 w-56 items-center justify-center sm:h-64 sm:w-64">
+        {/* Layered glow behind the mark */}
+        <div className="animate-hero-pulse-glow absolute inset-0 rounded-full bg-accent-purple/25 blur-2xl" />
+        <div className="absolute inset-6 rounded-full bg-accent-gold/15 blur-2xl" />
 
-      {/* Slowly rotating orbit ring with chain nodes */}
-      <OrbitSystem />
+        {/* Slowly rotating orbit ring with chain nodes */}
+        <OrbitSystem />
 
-      {/* Static outer ring for depth */}
-      <div className="absolute inset-8 rounded-full border border-white/5" />
+        {/* Static outer ring for depth */}
+        <div className="absolute inset-8 rounded-full border border-white/5" />
 
-      {/* Centerpiece — the Bagua mark */}
-      <div className="animate-hero-float relative">
-        <svg
-          viewBox="0 0 100 100"
-          className="relative h-28 w-28 drop-shadow-[0_0_25px_rgba(245,179,36,0.35)] sm:h-32 sm:w-32"
-        >
-          <polygon
-            points="50,3 84,20 97,50 84,80 50,97 16,80 3,50 16,20"
-            fill="#171123"
-            stroke="#F5B324"
-            strokeWidth="2.5"
-          />
-          <circle cx="50" cy="50" r="30" fill="none" stroke="#F5B324" strokeWidth="2" />
-          <path d="M50 20a15 15 0 0 0 0 30 15 15 0 0 1 0 30 30 30 0 0 1 0-60Z" fill="#F5B324" />
-          <circle cx="50" cy="35" r="3.2" fill="#171123" />
-          <circle cx="50" cy="65" r="3.2" fill="#F5B324" />
-        </svg>
+        {/* Centerpiece — the Bagua mark */}
+        <div className="animate-hero-float relative">
+          <svg
+            viewBox="0 0 100 100"
+            className="relative h-28 w-28 drop-shadow-[0_0_25px_rgba(245,179,36,0.35)] sm:h-32 sm:w-32"
+          >
+            <polygon
+              points="50,3 84,20 97,50 84,80 50,97 16,80 3,50 16,20"
+              fill="#171123"
+              stroke="#F5B324"
+              strokeWidth="2.5"
+            />
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#F5B324" strokeWidth="2" />
+            <path d="M50 20a15 15 0 0 0 0 30 15 15 0 0 1 0 30 30 30 0 0 1 0-60Z" fill="#F5B324" />
+            <circle cx="50" cy="35" r="3.2" fill="#171123" />
+            <circle cx="50" cy="65" r="3.2" fill="#F5B324" />
+          </svg>
+        </div>
       </div>
 
-      <TvlChip />
+      {/* Live stats — merged here from the old standalone StatsBar section */}
+      <HeroStatsPanel />
     </div>
   );
 }
 
 export default function Hero({ onLaunchClick, onDocsClick }) {
-  const [slide, setSlide] = useState(0);
   const heroRef = useRef(null);
 
   useEffect(() => {
@@ -254,19 +280,6 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
         </div>
 
         <HeroVisual />
-      </div>
-
-      <div className="relative flex justify-center gap-1.5 pb-4">
-        {Array.from({ length: SLIDES_COUNT }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setSlide(i)}
-            aria-label={`Go to slide ${i + 1}`}
-            className={`h-1.5 rounded-full transition-all ${
-              i === slide ? "w-5 bg-accent-purple" : "w-1.5 bg-white/20"
-            }`}
-          />
-        ))}
       </div>
     </section>
   );
