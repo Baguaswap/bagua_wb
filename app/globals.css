@@ -1,103 +1,386 @@
-"use client";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-import { useRef } from "react";
-import { RocketIcon, DocsIcon } from "@/components/icons";
-import { NETWORKS } from "@/lib/config";
-import LiveBadge from "@/components/hero/LiveBadge";
-import HeroBackground from "@/components/hero/HeroBackground";
-import HeroLogo from "@/components/hero/HeroLogo";
-import ChainOrbit from "@/components/hero/ChainOrbit";
-import HeroStats from "@/components/hero/HeroStats";
-import RippleButton from "@/components/hero/RippleButton";
-import useHeroParallax from "@/components/hero/useHeroParallax";
-
-// Orbit nodes are derived from the actually-configured networks so the Hero
-// never advertises a chain the app doesn't support yet. A trailing "more"
-// node hints at what's coming without overstating today's coverage.
-const ORBIT_NODES = [
-  ...NETWORKS.map((network) => ({
-    id: network.id,
-    name: network.name,
-    iconUrl: network.iconUrl,
-  })),
-  { id: "more", name: "More chains soon", iconUrl: null, isMore: true },
-];
-
-function HeroVisual() {
-  return (
-    <div className="relative mx-auto flex max-w-xs flex-col items-center gap-4 sm:max-w-none">
-      <div className="relative flex h-56 w-56 items-center justify-center sm:h-64 sm:w-64">
-        {/* Layered glow behind the mark */}
-        <div className="animate-hero-pulse-glow absolute inset-0 rounded-full bg-accent-purple/25 blur-2xl" />
-        <div className="absolute inset-6 rounded-full bg-accent-gold/15 blur-2xl" />
-
-        {/* Slowly rotating orbit ring with chain nodes + energy lines */}
-        <ChainOrbit nodes={ORBIT_NODES} />
-
-        {/* Static outer ring for depth */}
-        <div className="absolute inset-8 rounded-full border border-white/5" />
-
-        {/* Centerpiece — the Bagua mark, untouched, just orchestrated */}
-        <HeroLogo />
-      </div>
-
-      {/* Live stats */}
-      <HeroStats />
-    </div>
-  );
+:root {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
 }
 
-export default function Hero({ onLaunchClick, onDocsClick }) {
-  const heroRef = useRef(null);
-  useHeroParallax(heroRef);
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 
-  return (
-    <section
-      ref={heroRef}
-      className="relative mx-4 overflow-hidden rounded-2xl card-border bg-bg-panel"
-    >
-      <div className="hero-parallax-bg pointer-events-none absolute inset-0">
-        <HeroBackground />
-      </div>
+html,
+body {
+  background: #0a0714;
+  color: #f4f2fb;
+}
 
-      <div className="relative grid gap-6 p-6 sm:grid-cols-2 sm:items-center">
-        <div>
-          <LiveBadge />
+body {
+  font-family: var(--font-body);
+}
 
-          <h1 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-            Trade. Launch.
-            <br />
-            <span className="text-accent-gold">Burn.</span> Grow.
-          </h1>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/60">
-            Bagua Swap is a DEX &amp; meme coin launchpad on Giwa Chain with a $BAGUA
-            burn mechanism on every transaction.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <RippleButton
-              onClick={onLaunchClick}
-              className="group relative flex items-center gap-2 overflow-hidden rounded-xl bg-accent-gold px-4 py-2.5 text-sm font-semibold text-bg transition-all duration-200 hover:shadow-glow active:scale-95"
-            >
-              <RocketIcon
-                width="18"
-                height="18"
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-              Launch Your Token
-              <span className="absolute inset-0 -translate-x-full bg-white/25 transition-transform duration-500 group-hover:translate-x-full" />
-            </RippleButton>
-            <RippleButton
-              onClick={onDocsClick}
-              className="group relative flex items-center gap-2 overflow-hidden rounded-xl card-border bg-bg-card px-4 py-2.5 text-sm font-semibold text-white/90 transition-all duration-200 hover:border-white/20 hover:bg-white/5 active:scale-95"
-            >
-              <DocsIcon width="18" height="18" />
-              View Docs
-            </RippleButton>
-          </div>
-        </div>
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
-        <HeroVisual />
-      </div>
-    </section>
+.hero-glow {
+  background: radial-gradient(60% 60% at 70% 30%, rgba(139, 92, 246, 0.35), transparent 70%);
+}
+
+.hero-glow-gold {
+  background: radial-gradient(45% 45% at 20% 80%, rgba(245, 179, 36, 0.18), transparent 70%);
+}
+
+.hero-mouse-glow {
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 40%), rgba(139, 92, 246, 0.14), transparent 70%);
+}
+
+.hero-grid {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(60% 60% at 50% 40%, black, transparent);
+  mask-image: radial-gradient(60% 60% at 50% 40%, black, transparent);
+  animation: hero-grid-pan 6s linear infinite;
+}
+
+.hero-particle {
+  animation: hero-drift 7s ease-in-out infinite;
+}
+
+.animate-hero-float {
+  animation: hero-float 6s ease-in-out infinite;
+}
+
+.animate-hero-pulse-glow {
+  animation: hero-pulse-glow 4s ease-in-out infinite;
+}
+
+.animate-hero-spin-slow {
+  animation: hero-spin 34s linear infinite;
+}
+
+.animate-hero-spin-reverse {
+  animation: hero-spin-reverse 34s linear infinite;
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes hero-pulse-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes hero-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hero-spin-reverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes hero-drift {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(6px, -16px);
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes hero-grid-pan {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grid,
+  .hero-particle,
+  .animate-hero-float,
+  .animate-hero-pulse-glow,
+  .animate-hero-spin-slow,
+  .animate-hero-spin-reverse {
+    animation: none !important;
+  }
+}
+
+.card-border {
+  border: 1px solid #241c33;
+}
+
+/* ==========================================================================
+   Hero — premium background system
+   Layered nebula / fog / stars / rays / noise / particles, all GPU-only
+   (transform + opacity), all very slow, all pausable via reduced-motion.
+   ========================================================================== */
+
+.hero-nebula {
+  background: radial-gradient(50% 50% at 30% 25%, rgba(139, 92, 246, 0.28), transparent 70%),
+    radial-gradient(45% 45% at 75% 70%, rgba(245, 179, 36, 0.14), transparent 72%);
+  animation: hero-nebula-drift 42s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.hero-fog {
+  background: radial-gradient(38% 30% at 20% 85%, rgba(167, 139, 250, 0.16), transparent 75%),
+    radial-gradient(30% 24% at 85% 15%, rgba(139, 92, 246, 0.12), transparent 75%);
+  filter: blur(2px);
+  animation: hero-fog-drift 54s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero-rays {
+  background: conic-gradient(
+    from 0deg at 50% 35%,
+    transparent 0deg,
+    rgba(245, 179, 36, 0.05) 8deg,
+    transparent 20deg,
+    transparent 160deg,
+    rgba(139, 92, 246, 0.06) 172deg,
+    transparent 184deg,
+    transparent 360deg
   );
+  mix-blend-mode: screen;
+  animation: hero-rays-rotate 160s linear infinite;
+  will-change: transform;
+}
+
+.hero-stars {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-star {
+  position: absolute;
+  border-radius: 9999px;
+  background: #ffffff;
+  animation: hero-star-twinkle ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.hero-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+@keyframes hero-nebula-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate3d(1.5%, -2%, 0) scale(1.06);
+    opacity: 1;
+  }
+}
+
+@keyframes hero-fog-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-2%, 1.5%, 0);
+  }
+}
+
+@keyframes hero-rays-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hero-star-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.15);
+  }
+}
+
+/* Parallax — background drifts opposite the pointer, logo drifts with it. */
+.hero-parallax-bg {
+  transform: translate3d(calc(var(--px, 0) * -8px), calc(var(--py, 0) * -8px), 0);
+  transition: transform 0.4s ease-out;
+}
+
+.hero-parallax-logo {
+  transform: translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 6px), 0);
+  transition: transform 0.35s ease-out;
+}
+
+/* ==========================================================================
+   Hero — center logo aura
+   ========================================================================== */
+
+.animate-hero-tilt {
+  animation: hero-tilt 11s ease-in-out infinite;
+}
+
+.animate-hero-ring-spin {
+  animation: hero-spin 46s linear infinite;
+}
+
+.hero-ripple-ring {
+  animation: hero-ripple 4.5s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+}
+
+@keyframes hero-tilt {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+@keyframes hero-ripple {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Hero — chain orbit glass cards + energy lines
+   ========================================================================== */
+
+.chain-glass-card {
+  background: linear-gradient(160deg, rgba(23, 17, 35, 0.9), rgba(19, 14, 31, 0.7));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.chain-glass-card:hover {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 0 22px 2px rgba(139, 92, 246, 0.4),
+    0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.chain-node-pulse {
+  animation: hero-node-pulse 3.6s ease-in-out infinite;
+}
+
+@keyframes hero-node-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+.hero-orbit-line {
+  stroke-dasharray: 6 10;
+  animation: hero-line-flow 2.6s linear infinite;
+}
+
+@keyframes hero-line-flow {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+/* ==========================================================================
+   Hero — buttons: ripple + glow
+   ========================================================================== */
+
+.hero-btn-ripple {
+  position: absolute;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.55);
+  transform: scale(0);
+  animation: hero-btn-ripple-anim 650ms ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes hero-btn-ripple-anim {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-nebula,
+  .hero-fog,
+  .hero-rays,
+  .hero-star,
+  .animate-hero-tilt,
+  .animate-hero-ring-spin,
+  .hero-ripple-ring,
+  .chain-node-pulse,
+  .hero-orbit-line,
+  .hero-parallax-bg,
+  .hero-parallax-logo {
+    animation: none !important;
+    transform: none !important;
+  }
 }
