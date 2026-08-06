@@ -1,155 +1,103 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+"use client";
 
-:root {
-  --font-display: "Space Grotesk", sans-serif;
-  --font-body: "Inter", sans-serif;
+import { useRef } from "react";
+import { RocketIcon, DocsIcon } from "@/components/icons";
+import { NETWORKS } from "@/lib/config";
+import LiveBadge from "@/components/hero/LiveBadge";
+import HeroBackground from "@/components/hero/HeroBackground";
+import HeroLogo from "@/components/hero/HeroLogo";
+import ChainOrbit from "@/components/hero/ChainOrbit";
+import HeroStats from "@/components/hero/HeroStats";
+import RippleButton from "@/components/hero/RippleButton";
+import useHeroParallax from "@/components/hero/useHeroParallax";
+
+// Orbit nodes are derived from the actually-configured networks so the Hero
+// never advertises a chain the app doesn't support yet. A trailing "more"
+// node hints at what's coming without overstating today's coverage.
+const ORBIT_NODES = [
+  ...NETWORKS.map((network) => ({
+    id: network.id,
+    name: network.name,
+    iconUrl: network.iconUrl,
+  })),
+  { id: "more", name: "More chains soon", iconUrl: null, isMore: true },
+];
+
+function HeroVisual() {
+  return (
+    <div className="relative mx-auto flex max-w-xs flex-col items-center gap-4 sm:max-w-none">
+      <div className="relative flex h-56 w-56 items-center justify-center sm:h-64 sm:w-64">
+        {/* Layered glow behind the mark */}
+        <div className="animate-hero-pulse-glow absolute inset-0 rounded-full bg-accent-purple/25 blur-2xl" />
+        <div className="absolute inset-6 rounded-full bg-accent-gold/15 blur-2xl" />
+
+        {/* Slowly rotating orbit ring with chain nodes + energy lines */}
+        <ChainOrbit nodes={ORBIT_NODES} />
+
+        {/* Static outer ring for depth */}
+        <div className="absolute inset-8 rounded-full border border-white/5" />
+
+        {/* Centerpiece — the Bagua mark, untouched, just orchestrated */}
+        <HeroLogo />
+      </div>
+
+      {/* Live stats */}
+      <HeroStats />
+    </div>
+  );
 }
 
-* {
-  -webkit-tap-highlight-color: transparent;
-}
+export default function Hero({ onLaunchClick, onDocsClick }) {
+  const heroRef = useRef(null);
+  useHeroParallax(heroRef);
 
-html,
-body {
-  background: #0a0714;
-  color: #f4f2fb;
-}
+  return (
+    <section
+      ref={heroRef}
+      className="relative mx-4 overflow-hidden rounded-2xl card-border bg-bg-panel"
+    >
+      <div className="hero-parallax-bg pointer-events-none absolute inset-0">
+        <HeroBackground />
+      </div>
 
-body {
-  font-family: var(--font-body);
-}
+      <div className="relative grid gap-6 p-6 sm:grid-cols-2 sm:items-center">
+        <div>
+          <LiveBadge />
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+          <h1 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+            Trade. Launch.
+            <br />
+            <span className="text-accent-gold">Burn.</span> Grow.
+          </h1>
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/60">
+            Bagua Swap is a DEX &amp; meme coin launchpad on Giwa Chain with a $BAGUA
+            burn mechanism on every transaction.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <RippleButton
+              onClick={onLaunchClick}
+              className="group relative flex items-center gap-2 overflow-hidden rounded-xl bg-accent-gold px-4 py-2.5 text-sm font-semibold text-bg transition-all duration-200 hover:shadow-glow active:scale-95"
+            >
+              <RocketIcon
+                width="18"
+                height="18"
+                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+              Launch Your Token
+              <span className="absolute inset-0 -translate-x-full bg-white/25 transition-transform duration-500 group-hover:translate-x-full" />
+            </RippleButton>
+            <RippleButton
+              onClick={onDocsClick}
+              className="group relative flex items-center gap-2 overflow-hidden rounded-xl card-border bg-bg-card px-4 py-2.5 text-sm font-semibold text-white/90 transition-all duration-200 hover:border-white/20 hover:bg-white/5 active:scale-95"
+            >
+              <DocsIcon width="18" height="18" />
+              View Docs
+            </RippleButton>
+          </div>
+        </div>
 
-.hero-glow {
-  background: radial-gradient(60% 60% at 70% 30%, rgba(139, 92, 246, 0.35), transparent 70%);
-}
-
-.hero-glow-gold {
-  background: radial-gradient(45% 45% at 20% 80%, rgba(245, 179, 36, 0.18), transparent 70%);
-}
-
-.hero-mouse-glow {
-  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 40%), rgba(139, 92, 246, 0.14), transparent 70%);
-}
-
-.hero-grid {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 28px 28px;
-  -webkit-mask-image: radial-gradient(60% 60% at 50% 40%, black, transparent);
-  mask-image: radial-gradient(60% 60% at 50% 40%, black, transparent);
-  animation: hero-grid-pan 6s linear infinite;
-}
-
-.hero-particle {
-  animation: hero-drift 7s ease-in-out infinite;
-}
-
-.animate-hero-float {
-  animation: hero-float 6s ease-in-out infinite;
-}
-
-.animate-hero-pulse-glow {
-  animation: hero-pulse-glow 4s ease-in-out infinite;
-}
-
-.animate-hero-spin-slow {
-  animation: hero-spin 34s linear infinite;
-}
-
-.animate-hero-spin-reverse {
-  animation: hero-spin-reverse 34s linear infinite;
-}
-
-@keyframes hero-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes hero-pulse-glow {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.95;
-    transform: scale(1.08);
-  }
-}
-
-@keyframes hero-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes hero-spin-reverse {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(-360deg);
-  }
-}
-
-@keyframes hero-drift {
-  0% {
-    transform: translate(0, 0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.7;
-  }
-  50% {
-    transform: translate(6px, -16px);
-  }
-  85% {
-    opacity: 0.7;
-  }
-  100% {
-    transform: translate(0, 0);
-    opacity: 0;
-  }
-}
-
-@keyframes hero-grid-pan {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 28px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-grid,
-  .hero-particle,
-  .animate-hero-float,
-  .animate-hero-pulse-glow,
-  .animate-hero-spin-slow,
-  .animate-hero-spin-reverse {
-    animation: none !important;
-  }
-}
-
-.card-border {
-  border: 1px solid #241c33;
+        <HeroVisual />
+      </div>
+    </section>
+  );
 }
