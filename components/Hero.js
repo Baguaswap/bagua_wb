@@ -65,14 +65,11 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
           <LiveBadge />
 
           <h1 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-            Trade. Launch.
+            Build Once.
             <br />
-            <span className="text-accent-gold">Burn.</span> Grow.
+            <span className="text-accent-gold">Launch</span> Anywhere.
           </h1>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/60">
-            Bagua Swap is a DEX &amp; meme coin launchpad on Giwa Chain with a $BAGUA
-            burn mechanism on every transaction.
-          </p>
+
           <div className="mt-5 flex flex-wrap gap-3">
             <RippleButton
               onClick={onLaunchClick}
