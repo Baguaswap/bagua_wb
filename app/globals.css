@@ -13,7 +13,7 @@
 
 html,
 body {
-  background: #0a0714;
+  background: #08080a;
   color: #f4f2fb;
 }
 
@@ -151,7 +151,7 @@ body {
 }
 
 .card-border {
-  border: 1px solid #241c33;
+  border: 1px solid #1e1e24;
 }
 
 /* ==========================================================================
