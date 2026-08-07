@@ -18,13 +18,15 @@ const STARS = [
 ];
 
 const PARTICLES = [
-  { left: "12%", top: "20%", size: 1, color: "bg-accent-violet/70", delay: "0s" },
-  { left: "85%", top: "30%", size: 1.5, color: "bg-accent-gold/60", delay: "1.4s" },
-  { left: "70%", top: "75%", size: 1, color: "bg-accent-purple/70", delay: "2.6s" },
-  { left: "25%", top: "80%", size: 1.5, color: "bg-accent-violet/50", delay: "3.8s" },
+  { left: "12%", top: "20%", size: 1, color: "bg-accent-gold/70", delay: "0s" },
+  { left: "85%", top: "30%", size: 1.5, color: "bg-amber-300/60", delay: "1.4s" },
+  { left: "70%", top: "75%", size: 1, color: "bg-accent-gold/70", delay: "2.6s" },
+  { left: "25%", top: "80%", size: 1.5, color: "bg-amber-300/50", delay: "3.8s" },
   { left: "45%", top: "15%", size: 1, color: "bg-accent-gold/50", delay: "5s" },
-  { left: "58%", top: "45%", size: 1, color: "bg-accent-purple/50", delay: "2.1s" },
-  { left: "6%", top: "55%", size: 1.5, color: "bg-accent-violet/40", delay: "4.4s" },
+  { left: "58%", top: "45%", size: 1, color: "bg-amber-300/50", delay: "2.1s" },
+  { left: "6%", top: "55%", size: 1.5, color: "bg-accent-gold/40", delay: "4.4s" },
+  { left: "33%", top: "35%", size: 1, color: "bg-amber-300/60", delay: "3.1s" },
+  { left: "78%", top: "55%", size: 1.5, color: "bg-accent-gold/55", delay: "1.7s" },
 ];
 
 export default function HeroBackground() {
