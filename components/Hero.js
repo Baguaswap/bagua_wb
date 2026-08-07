@@ -15,15 +15,15 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
   return (
     <section
       ref={heroRef}
-      className="relative mx-4 overflow-hidden rounded-2xl card-border bg-bg-panel"
+      className="relative mx-4 overflow-hidden rounded-2xl card-border bg-[#050308]"
     >
       <div className="hero-parallax-bg pointer-events-none absolute inset-0">
         <HeroBackground />
       </div>
 
       <div className="relative flex flex-col gap-5 p-5">
-        <div className="grid grid-cols-5 items-center gap-3">
-          <div className="col-span-3">
+        <div className="relative">
+          <div className="relative z-10 max-w-[64%] sm:max-w-[56%]">
             <LiveBadge />
 
             <h1 className="mt-3 font-display text-2xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
@@ -38,14 +38,14 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
               The ultimate platform to launch, trade, and grow meme tokens.
             </p>
 
-            <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <div className="mt-4 flex flex-wrap gap-2">
               <RippleButton
                 onClick={onLaunchClick}
-                className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-accent-gold px-3.5 py-2.5 text-xs font-semibold text-bg transition-all duration-200 hover:shadow-glow active:scale-95 sm:text-sm"
+                className="group relative flex items-center gap-1.5 overflow-hidden rounded-xl bg-accent-gold px-3 py-2.5 text-[11px] font-semibold text-bg transition-all duration-200 hover:shadow-glow active:scale-95 sm:gap-2 sm:px-4 sm:text-sm"
               >
                 <RocketIcon
-                  width="16"
-                  height="16"
+                  width="14"
+                  height="14"
                   className="shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
                 Launch Your Token
@@ -53,22 +53,24 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
               </RippleButton>
               <RippleButton
                 onClick={onDocsClick}
-                className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-xl card-border bg-bg-card px-3.5 py-2.5 text-xs font-semibold text-white/90 transition-all duration-200 hover:border-white/20 hover:bg-white/5 active:scale-95 sm:text-sm"
+                className="group relative flex items-center gap-1.5 overflow-hidden rounded-xl card-border bg-bg-card px-3 py-2.5 text-[11px] font-semibold text-white/90 transition-all duration-200 hover:border-white/20 hover:bg-white/5 active:scale-95 sm:gap-2 sm:px-4 sm:text-sm"
               >
-                <DocsIcon width="16" height="16" className="shrink-0" />
+                <DocsIcon width="14" height="14" className="shrink-0" />
                 View Docs
               </RippleButton>
             </div>
           </div>
 
-          {/* Hero visual — hand + coin artwork, glow behind, height-capped so
-              the row stays compact/landscape instead of stacking tall. */}
-          <div className="relative col-span-2 flex h-40 items-center justify-center sm:h-56">
-            <div className="animate-hero-pulse-glow pointer-events-none absolute inset-0 m-auto h-full w-full rounded-full bg-accent-gold/20 blur-3xl" />
+          {/* Hero visual — hand + coin artwork. Absolutely positioned so it
+              scales off its OWN box (not squeezed by the text column) and is
+              free to sit large/overlapping like the reference, while overflow
+              on the section clips anything that spills past the card edge. */}
+          <div className="pointer-events-none absolute -right-3 top-1/2 h-[150%] w-[46%] -translate-y-1/2 sm:h-[160%] sm:w-[42%]">
+            <div className="animate-hero-pulse-glow absolute inset-0 m-auto h-2/3 w-2/3 rounded-full bg-accent-gold/25 blur-3xl" />
             <img
               src="/hero-hand.png"
               alt="Bagua coin held in a robotic hand"
-              className="hero-parallax-logo animate-hero-float relative h-full w-auto object-contain drop-shadow-[0_0_35px_rgba(245,179,36,0.35)]"
+              className="hero-parallax-logo animate-hero-float relative h-full w-full object-contain drop-shadow-[0_0_35px_rgba(245,179,36,0.4)]"
             />
           </div>
         </div>
