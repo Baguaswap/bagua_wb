@@ -25,8 +25,8 @@ const ORBIT_NODES = [
 
 function HeroVisual() {
   return (
-    <div className="relative mx-auto flex max-w-xs flex-col items-center gap-4 sm:max-w-none">
-      <div className="relative flex h-56 w-56 items-center justify-center sm:h-64 sm:w-64">
+    <div className="relative mx-auto flex max-w-xs flex-col items-center gap-4 sm:max-w-none sm:pr-16">
+      <div className="relative z-0 flex h-56 w-56 items-center justify-center sm:h-64 sm:w-64">
         {/* Layered glow behind the mark */}
         <div className="animate-hero-pulse-glow absolute inset-0 rounded-full bg-accent-purple/25 blur-2xl" />
         <div className="absolute inset-6 rounded-full bg-accent-gold/15 blur-2xl" />
