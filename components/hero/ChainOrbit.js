@@ -1,4 +1,4 @@
-import { EthIcon, PlusCircleIcon } from "@/components/icons";
+import { EthIcon, PlusCircleIcon, CHAIN_ICON_MAP } from "@/components/icons";
 
 const RADIUS = 78;
 const DURATION = 40;
@@ -83,7 +83,10 @@ function OrbitNode({ node, angle }) {
             ) : node.iconUrl ? (
               <img src={node.iconUrl} alt={node.name} className="h-1/2 w-1/2 rounded-full" />
             ) : (
-              <EthIcon width={NODE_SIZE * 0.46} height={NODE_SIZE * 0.46} />
+              (() => {
+                const ChainIcon = CHAIN_ICON_MAP[node.icon] || EthIcon;
+                return <ChainIcon width={NODE_SIZE * 0.46} height={NODE_SIZE * 0.46} />;
+              })()
             )}
             <span className="pointer-events-none absolute inset-0 rounded-xl bg-accent-purple/0 shadow-[0_0_0_0_rgba(139,92,246,0)] transition-shadow duration-300 group-hover:bg-accent-purple/10 group-hover:shadow-[0_0_18px_4px_rgba(139,92,246,0.35)]" />
           </div>
