@@ -8,10 +8,10 @@ module.exports = {
     extend: {
       colors: {
         bg: {
-          DEFAULT: "#0A0714",
-          panel: "#130E1F",
-          card: "#171123",
-          border: "#241C33",
+          DEFAULT: "#08080A",
+          panel: "#0F0F12",
+          card: "#0A0A0D",
+          border: "#1E1E24",
         },
         accent: {
           purple: "#8B5CF6",
