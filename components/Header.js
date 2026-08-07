@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MenuIcon, BellIcon, ChevronDownIcon, WalletIcon, EthIcon } from "@/components/icons";
+import { MenuIcon, BellIcon, ChevronDownIcon, WalletIcon, EthIcon, CHAIN_ICON_MAP } from "@/components/icons";
 import { useWallet } from "@/lib/WalletProvider";
 import NetworkSelectModal from "@/components/NetworkSelectModal";
 
@@ -40,7 +40,10 @@ export default function Header({ onOpenMenu, onComingSoon }) {
           {selectedNetwork.iconUrl ? (
             <img src={selectedNetwork.iconUrl} alt="" className="h-3.5 w-3.5 rounded-full" />
           ) : (
-            <EthIcon width="14" height="14" />
+            (() => {
+              const ChainIcon = CHAIN_ICON_MAP[selectedNetwork.icon] || EthIcon;
+              return <ChainIcon width="14" height="14" />;
+            })()
           )}
           {selectedNetwork.name}
           <ChevronDownIcon width="14" height="14" />
