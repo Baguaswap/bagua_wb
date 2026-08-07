@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CloseIcon, SearchIcon, CheckCircleIcon, EthIcon } from "@/components/icons";
+import { CloseIcon, SearchIcon, CheckCircleIcon, EthIcon, CHAIN_ICON_MAP } from "@/components/icons";
 import { NETWORKS } from "@/lib/config";
 
 const FILTERS = [
@@ -85,7 +85,10 @@ export default function NetworkSelectModal({ open, onClose, onSelect, selectedNe
                     <img src={network.iconUrl} alt="" className="h-8 w-8 shrink-0 rounded-full" />
                   ) : (
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/80">
-                      <EthIcon width="18" height="18" />
+                      {(() => {
+                        const ChainIcon = CHAIN_ICON_MAP[network.icon] || EthIcon;
+                        return <ChainIcon width="18" height="18" />;
+                      })()}
                     </span>
                   )}
                   <span className="flex-1">
