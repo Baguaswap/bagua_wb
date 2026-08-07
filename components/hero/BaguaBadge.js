@@ -22,25 +22,11 @@ export default function BaguaBadge() {
         />
       ))}
 
-      <svg
-        viewBox="0 0 100 100"
+      <img
+        src="/logo.png"
+        alt="Bagua"
         className="relative h-20 w-20 drop-shadow-[0_0_18px_rgba(245,179,36,0.4)]"
-      >
-        <polygon
-          points="50,3 84,20 97,50 84,80 50,97 16,80 3,50 16,20"
-          fill="#171123"
-          stroke="#F5B324"
-          strokeWidth="2.5"
-        />
-        <circle cx="50" cy="50" r="30" fill="#F5B324" />
-        <path
-          d="M50,20 A15,15 0 0,1 50,50 A15,15 0 0,0 50,80 A30,30 0 0,1 50,20 Z"
-          fill="#E11D2E"
-        />
-        <circle cx="50" cy="35" r="4" fill="#F5B324" />
-        <circle cx="50" cy="65" r="4" fill="#E11D2E" />
-        <circle cx="50" cy="50" r="30" fill="none" stroke="#F5B324" strokeWidth="1.5" />
-      </svg>
+      />
     </div>
   );
 }
