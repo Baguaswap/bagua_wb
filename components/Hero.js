@@ -15,7 +15,7 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
   return (
     <section
       ref={heroRef}
-      className="relative mx-4 overflow-hidden rounded-2xl card-border bg-[#050308]"
+      className="relative mx-4 overflow-hidden rounded-2xl card-border bg-[#060607]"
     >
       <div className="hero-parallax-bg pointer-events-none absolute inset-0">
         <HeroBackground />
