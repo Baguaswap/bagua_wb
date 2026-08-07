@@ -696,3 +696,11 @@ export function ArrowRightIcon(props) {
     </svg>
   );
 }
+
+export function ChevronRightIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" {...base} {...props}>
+      <polyline points="9 6 15 12 9 18" />
+    </svg>
+  );
+}
