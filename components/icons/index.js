@@ -580,3 +580,119 @@ export const CHAIN_ICON_MAP = {
   TronIcon,
   SolanaIcon,
 };
+
+// ----- Login / wallet-provider brand marks (used by WalletConnectModal) -----
+
+export function GoogleIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...props}>
+      <path
+        fill="#4285F4"
+        d="M22.5 12.3c0-.8-.1-1.5-.2-2.2H12v4.3h5.9c-.3 1.4-1 2.5-2.2 3.3v2.7h3.6c2.1-1.9 3.2-4.8 3.2-8.1Z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 23c2.9 0 5.4-1 7.2-2.6l-3.6-2.7c-1 .7-2.2 1.1-3.6 1.1-2.8 0-5.2-1.9-6-4.4H2.3v2.8A11 11 0 0 0 12 23Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M6 14.4a6.6 6.6 0 0 1 0-4.2V7.4H2.3a11 11 0 0 0 0 9.8Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.8c1.6 0 3 .5 4.1 1.6l3.1-3.1C17.4 2.5 15 1.5 12 1.5A11 11 0 0 0 2.3 7.4l3.7 2.8c.8-2.5 3.2-4.4 6-4.4Z"
+      />
+    </svg>
+  );
+}
+
+export function MetaMaskIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...props}>
+      <path fill="#E17726" d="M20.9 2.5 12.9 8.3l1.5-3.5Z" />
+      <path fill="#E27625" d="M3.1 2.5 11 8.4 9.6 4.8Z" />
+      <path fill="#E27625" d="M18 16.2l-2.2 3.3 4.6 1.3 1.3-4.5Z" />
+      <path fill="#E27625" d="M2.3 16.3l1.3 4.5 4.6-1.3-2.2-3.3Z" />
+      <path fill="#E27625" d="m7.9 10.5-1.3 1.9 4.5.2-.2-4.8Z" />
+      <path fill="#E27625" d="m16.1 10.5-3.1-2.8-.1 4.9 4.5-.2Z" />
+      <path fill="#E27625" d="M8.2 19.5l2.7-1.3-2.4-1.9Z" />
+      <path fill="#E27625" d="m13.1 18.2 2.7 1.3-.3-3.2Z" />
+    </svg>
+  );
+}
+
+export function PhantomIcon(props) {
+  const id = useId();
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...props}>
+      <defs>
+        <linearGradient id={`ph-${id}`} x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#AB9FF2" />
+          <stop offset="100%" stopColor="#6C5DD3" />
+        </linearGradient>
+      </defs>
+      <path
+        fill={`url(#ph-${id})`}
+        d="M12 2C6.9 2 3 6.2 3 11.6V19a3 3 0 0 0 3 3h1.2c.7 0 1.3-.6 1.3-1.3v-2.4c0-.6.5-1 1-1s1 .4 1 1v2.4c0 .7.6 1.3 1.3 1.3H14.5c.7 0 1.3-.6 1.3-1.3v-2.4c0-.6.5-1 1-1s1 .4 1 1v2.4c0 .7.6 1.3 1.3 1.3H21a3 3 0 0 0 0-6h-.1C20.6 6.6 16.8 2 12 2Z"
+      />
+      <circle cx="9" cy="12" r="1.4" fill="#FFFFFF" />
+      <circle cx="14.5" cy="12" r="1.4" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
+export function WalletConnectIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...props}>
+      <rect width="24" height="24" rx="6" fill="#3396FF" />
+      <path
+        fill="#FFFFFF"
+        d="M7.1 9.5c2.7-2.6 7.1-2.6 9.8 0l.3.3c.1.1.1.4 0 .5l-1.1 1.1c-.1.1-.2.1-.3 0l-.5-.4c-1.9-1.8-4.9-1.8-6.8 0l-.5.5c-.1.1-.2.1-.3 0L6.6 10.4c-.1-.1-.1-.4 0-.5Zm12.1 2.3 1 1c.1.1.1.4 0 .5l-4.4 4.4c-.1.1-.4.1-.5 0l-3.2-3.1a.1.1 0 0 0-.2 0l-3.2 3.1c-.1.1-.4.1-.5 0L3.8 13.3c-.1-.1-.1-.4 0-.5l1-1c.1-.1.4-.1.5 0l3.2 3.1a.1.1 0 0 0 .2 0l3.2-3.1c.1-.1.4-.1.5 0l3.2 3.1a.1.1 0 0 0 .2 0l3.2-3.1c.1-.1.3-.1.4 0Z"
+      />
+    </svg>
+  );
+}
+
+export function CoinbaseWalletIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...props}>
+      <circle cx="12" cy="12" r="10.5" fill="#0052FF" />
+      <rect x="9" y="9" width="6" height="6" rx="1.5" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
+export function OkxIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...props}>
+      <rect width="24" height="24" rx="5" fill="#000000" />
+      <rect x="9.75" y="9.75" width="4.5" height="4.5" fill="#FFFFFF" />
+      <rect x="3.5" y="3.5" width="4.5" height="4.5" fill="#FFFFFF" />
+      <rect x="16" y="3.5" width="4.5" height="4.5" fill="#FFFFFF" />
+      <rect x="3.5" y="16" width="4.5" height="4.5" fill="#FFFFFF" />
+      <rect x="16" y="16" width="4.5" height="4.5" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
+export function RabbyIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...props}>
+      <path
+        fill="#7084FF"
+        d="M6 10.5c-1.4-2-1.7-4.3-1.2-5.8.2-.6 1-.7 1.4-.2l2.4 3c1-.3 2.2-.5 3.4-.5s2.4.2 3.4.5l2.4-3c.4-.5 1.2-.4 1.4.2.5 1.5.2 3.8-1.2 5.8 1 1.2 1.6 2.7 1.6 4.4 0 4-3.6 6.6-8 6.6s-8-2.6-8-6.6c0-1.7.6-3.2 1.4-4.4Z"
+      />
+      <circle cx="9.3" cy="14" r="1.3" fill="#FFFFFF" />
+      <circle cx="14.7" cy="14" r="1.3" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" {...base} {...props}>
+      <line x1="4" y1="12" x2="19" y2="12" />
+      <polyline points="13 6 19 12 13 18" />
+    </svg>
+  );
+}
