@@ -5,28 +5,29 @@ import { FlameIcon, ZapIcon, BridgeIcon, ShieldCheckIcon } from "@/components/ic
 
 // Roadmap-style stat row: only "Chains" has a live value today (it mirrors
 // whatever's configured in the network switcher); the rest are marked
-// "Soon" until those systems actually ship.
+// "Soon" until those systems actually ship. Each stat carries its own
+// accent color so the icon ring isn't uniformly purple.
 const HERO_STATS = [
-  { id: "burned", label: "Burned", value: "Soon", icon: FlameIcon, live: false },
-  { id: "gas", label: "Gas Sponsored", value: "Soon", icon: ZapIcon, live: false },
-  { id: "chains", label: "Chains", value: `${NETWORKS.length}`, icon: BridgeIcon, live: true },
-  { id: "assets", label: "Assets Protected", value: "Soon", icon: ShieldCheckIcon, live: false },
+  { id: "burned", label: "Burned", value: "Soon", icon: FlameIcon, live: false, tint: "text-accent-gold border-accent-gold/40" },
+  { id: "gas", label: "Gas Sponsored", value: "Soon", icon: ZapIcon, live: false, tint: "text-accent-violet border-accent-purple/40" },
+  { id: "chains", label: "Chains", value: `${NETWORKS.length}`, icon: BridgeIcon, live: true, tint: "text-white/70 border-white/25" },
+  { id: "assets", label: "Assets Protected", value: "Soon", icon: ShieldCheckIcon, live: false, tint: "text-accent-violet border-accent-purple/40" },
 ];
 
 export default function HeroStats() {
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-      {HERO_STATS.map(({ id, icon: Icon, label, value, live }) => (
+    <div className="grid grid-cols-4 gap-1.5 sm:gap-2.5">
+      {HERO_STATS.map(({ id, icon: Icon, label, value, live, tint }) => (
         <div
           key={id}
-          className="flex flex-col items-center gap-2 rounded-xl bg-bg-card card-border py-4 text-center transition-colors duration-200 hover:border-white/20"
+          className="flex flex-col items-center gap-1 rounded-lg border border-white/10 bg-black/30 px-1 py-2.5 text-center transition-colors duration-200 hover:border-white/20 sm:gap-1.5 sm:py-3"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-purple/15 text-accent-violet">
-            <Icon width="16" height="16" />
+          <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${tint} sm:h-7 sm:w-7`}>
+            <Icon width="11" height="11" />
           </div>
-          <p className="text-xs text-white/50">{label}</p>
+          <p className="text-[9px] leading-tight text-white/50 sm:text-[10px]">{label}</p>
           <p
-            className={`font-display text-sm font-bold leading-none ${
+            className={`font-display text-[11px] font-bold leading-none sm:text-xs ${
               live ? "text-white" : "text-accent-gold"
             }`}
           >
