@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   CloseIcon,
   ShieldCheckIcon,
@@ -26,17 +27,19 @@ const WALLET_OPTIONS = [
 ];
 
 export default function WalletConnectModal({ open, onClose, onSelectWallet, onGoogle, onGuest }) {
+  const [agreed, setAgreed] = useState(false);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center">
+    <div className="fixed inset-0 z-[80] flex items-center justify-center px-4 py-6">
       <button
         aria-label="Close popup overlay"
         onClick={onClose}
         className="fixed inset-0 bg-black/70 backdrop-blur-sm"
       />
 
-      <div className="relative flex max-h-[94vh] w-full flex-col overflow-y-auto no-scrollbar rounded-t-3xl bg-bg-panel card-border p-6 shadow-glow sm:max-w-sm sm:rounded-3xl">
+      <div className="relative flex max-h-[88vh] w-full max-w-sm flex-col overflow-y-auto no-scrollbar rounded-3xl bg-bg-panel card-border p-6 shadow-glow">
         <div className="flex items-center justify-between text-xs text-white/70">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
@@ -109,7 +112,18 @@ export default function WalletConnectModal({ open, onClose, onSelectWallet, onGo
         </div>
 
         <div className="mt-5 flex items-start justify-center gap-2 text-center">
-          <span className="mt-0.5 inline-block h-3.5 w-3.5 shrink-0 rounded-full border border-white/40" />
+          <button
+            type="button"
+            role="checkbox"
+            aria-checked={agreed}
+            aria-label="Agree to Terms of Service and Privacy Policy"
+            onClick={() => setAgreed((v) => !v)}
+            className={`mt-0.5 flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border transition-colors ${
+              agreed ? "border-accent-purple bg-accent-purple" : "border-white/40"
+            }`}
+          >
+            {agreed && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+          </button>
           <p className="text-xs leading-relaxed text-white/50">
             By continuing, you agree to the{" "}
             <span className="text-amber-400">Terms of Service</span> and{" "}
