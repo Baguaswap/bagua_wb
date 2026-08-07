@@ -33,6 +33,12 @@ export default function Header({ onOpenMenu, onComingSoon }) {
     onComingSoon?.("Google Login");
   };
 
+  // Guest mode just dismisses the popup and lets the person browse without
+  // a connected wallet - no account/session is created.
+  const handleGuestContinue = () => {
+    setWalletConnectModalOpen(false);
+  };
+
   return (
     <header className="flex items-center justify-between gap-2 px-4 py-4">
       <div className="flex items-center gap-3">
@@ -89,6 +95,7 @@ export default function Header({ onOpenMenu, onComingSoon }) {
         onClose={() => setWalletConnectModalOpen(false)}
         onSelectWallet={handleSelectWallet}
         onGoogle={handleGoogleLogin}
+        onGuest={handleGuestContinue}
       />
 
       <NetworkSelectModal
