@@ -11,14 +11,15 @@ import HeroStats from "@/components/hero/HeroStats";
 import RippleButton from "@/components/hero/RippleButton";
 import useHeroParallax from "@/components/hero/useHeroParallax";
 
-// Orbit nodes are derived from the actually-configured networks so the Hero
-// never advertises a chain the app doesn't support yet. A trailing "more"
-// node hints at what's coming without overstating today's coverage.
+// Orbit nodes showcase the mainnet chains only (the network switcher up in
+// the header still lists every entry, testnets included) — this keeps the
+// hero visual as a clean "multi-chain" marketing shot.
 const ORBIT_NODES = [
-  ...NETWORKS.map((network) => ({
+  ...NETWORKS.filter((network) => network.type === "mainnet").map((network) => ({
     id: network.id,
     name: network.name,
     iconUrl: network.iconUrl,
+    icon: network.icon,
   })),
   { id: "more", name: "More chains soon", iconUrl: null, isMore: true },
 ];
