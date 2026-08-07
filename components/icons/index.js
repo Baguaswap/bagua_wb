@@ -1,6 +1,8 @@
 // Every icon in this file is a plain inline SVG React component.
 // No emoji glyphs are used anywhere in this project.
 
+import { useId } from "react";
+
 const base = {
   fill: "none",
   stroke: "currentColor",
@@ -496,12 +498,66 @@ export function CalendarIcon(props) {
 }
 
 export function EthIcon(props) {
+  // Two-tone grayscale diamond + chevron mark (matches the reference brand
+  // asset), rendered with explicit fills so it stays legible on the dark
+  // theme instead of inheriting `currentColor`.
   return (
-    <svg viewBox="0 0 24 24" width="18" height="18" {...base} {...props}>
-      <path d="M12 2.5 12 9.8 18 12.5Z" />
-      <path d="M12 2.5 6 12.5 12 9.8Z" />
-      <path d="M12 9.8 6 12.5 12 15.5 18 12.5Z" />
-      <path d="M12 16.6 6 13.5 12 21.5 18 13.5Z" />
+    <svg viewBox="0 0 24 24" width="18" height="18" {...props}>
+      <path d="M12 1.5 12 10.2 5 12.6Z" fill="#9AA0AC" />
+      <path d="M12 1.5 19 12.6 12 10.2Z" fill="#5C6270" />
+      <path d="M12 10.2 5 12.6 12 14.6 19 12.6Z" fill="#14151A" />
+      <path d="M12 16.3 5 14.1 12 22.5Z" fill="#9AA0AC" />
+      <path d="M12 16.3 19 14.1 12 22.5Z" fill="#5C6270" />
+    </svg>
+  );
+}
+
+// Chain marks below use each network's real brand colors/geometry.
+
+export function BnbIcon(props) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" {...props}>
+      <path
+        fill="#F0B90B"
+        d="M7.792 6.647L12 4.286l4.209 2.361l-1.543.874L12 6.03L9.34 7.52zm8.417 2.983l-1.543-.874L12 10.247L9.34 8.756l-1.547.874v1.744l2.657 1.492v2.978l1.551.874l1.547-.874v-2.978l2.662-1.492zm0 4.727V12.61l-1.543.874v1.744zm1.101.617l-2.661 1.487v1.749l4.208-2.366v-4.723l-1.547.87zM15.763 8.14l1.543.874v1.744l1.551-.87V8.14l-1.547-.875l-1.547.879zm-5.314 8.957v1.744l1.551.874l1.547-.874V17.1L12 17.97l-1.547-.874zm-2.657-2.743l1.543.874v-1.744l-1.543-.875v1.75zm2.657-6.214L12 9.013l1.547-.874L12 7.264l-1.547.879zm-3.759.874l1.547-.874l-1.543-.875l-1.55.879V9.89l1.546.87zm0 2.978l-1.547-.87v4.723l4.209 2.366v-1.753L6.694 14.97v-2.983z"
+      />
+    </svg>
+  );
+}
+
+export function TronIcon(props) {
+  // Faithful recreation of Tron's pennant-and-fold mark — reconstructed
+  // from the reference image (no official SVG source was provided for this
+  // one). Swap in the exact brand path here if you have it.
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" {...props}>
+      <path
+        d="M2.4 2.2 19.4 3.9 21.6 8 12.2 21.8 2.4 8.2Z"
+        stroke="#FF060A"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <path d="M2.4 2.2 9.6 5.1 19.4 3.9" stroke="#FF060A" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
+      <path d="M9.6 5.1 21.6 8" stroke="#FF060A" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
+      <path d="M9.6 5.1 12.2 21.8" stroke="#FF060A" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function SolanaIcon(props) {
+  const gradientId = `solana-gradient-${useId()}`;
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" {...props}>
+      <defs>
+        <linearGradient id={gradientId} x1="2" y1="19" x2="22" y2="5" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#9945FF" />
+          <stop offset="100%" stopColor="#14F195" />
+        </linearGradient>
+      </defs>
+      <path d="M5.5 6.3 20 6.3 17.2 9.2 3 9.2Z" fill={`url(#${gradientId})`} />
+      <path d="M3 11.4 17.2 11.4 20 14.3 5.5 14.3Z" fill={`url(#${gradientId})`} />
+      <path d="M5.5 16.5 20 16.5 17.2 19.4 3 19.4Z" fill={`url(#${gradientId})`} />
     </svg>
   );
 }
@@ -516,3 +572,11 @@ export function InfoIcon(props) {
   );
 }
 
+// Lookup used wherever a network needs its fallback vector icon by name
+// (network.icon in lib/config.js) instead of a real image asset.
+export const CHAIN_ICON_MAP = {
+  EthIcon,
+  BnbIcon,
+  TronIcon,
+  SolanaIcon,
+};
