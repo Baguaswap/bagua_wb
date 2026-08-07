@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MenuIcon, BellIcon, ChevronDownIcon, WalletIcon, EthIcon, CHAIN_ICON_MAP } from "@/components/icons";
 import { useWallet } from "@/lib/WalletProvider";
 import NetworkSelectModal from "@/components/NetworkSelectModal";
+import WalletConnectModal from "@/components/WalletConnectModal";
 
 function truncateAddress(address) {
   if (!address) return "";
@@ -12,11 +13,24 @@ function truncateAddress(address) {
 
 export default function Header({ onOpenMenu, onComingSoon }) {
   const [networkModalOpen, setNetworkModalOpen] = useState(false);
+  const [walletConnectModalOpen, setWalletConnectModalOpen] = useState(false);
   const { address, connecting, connect, selectedNetwork } = useWallet();
 
   const handleSelectNetwork = (network) => {
     setNetworkModalOpen(false);
     connect(network);
+  };
+
+  // Wallet options in the login popup all go through the same EVM connect
+  // flow (pick network, then connect) - only the icon/label differs.
+  const handleSelectWallet = () => {
+    setWalletConnectModalOpen(false);
+    setNetworkModalOpen(true);
+  };
+
+  const handleGoogleLogin = () => {
+    setWalletConnectModalOpen(false);
+    onComingSoon?.("Google Login");
   };
 
   return (
@@ -50,7 +64,7 @@ export default function Header({ onOpenMenu, onComingSoon }) {
         </button>
 
         <button
-          onClick={address ? onOpenMenu : () => setNetworkModalOpen(true)}
+          onClick={address ? onOpenMenu : () => setWalletConnectModalOpen(true)}
           disabled={connecting}
           className="flex items-center gap-1 rounded-full bg-accent-purple px-2.5 py-1.5 text-xs font-semibold text-white disabled:opacity-60"
         >
@@ -69,6 +83,13 @@ export default function Header({ onOpenMenu, onComingSoon }) {
           </span>
         </button>
       </div>
+
+      <WalletConnectModal
+        open={walletConnectModalOpen}
+        onClose={() => setWalletConnectModalOpen(false)}
+        onSelectWallet={handleSelectWallet}
+        onGoogle={handleGoogleLogin}
+      />
 
       <NetworkSelectModal
         open={networkModalOpen}
