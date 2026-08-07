@@ -2,51 +2,11 @@
 
 import { useRef } from "react";
 import { RocketIcon, DocsIcon } from "@/components/icons";
-import { NETWORKS } from "@/lib/config";
 import LiveBadge from "@/components/hero/LiveBadge";
 import HeroBackground from "@/components/hero/HeroBackground";
-import HeroLogo from "@/components/hero/HeroLogo";
-import ChainOrbit from "@/components/hero/ChainOrbit";
 import HeroStats from "@/components/hero/HeroStats";
 import RippleButton from "@/components/hero/RippleButton";
 import useHeroParallax from "@/components/hero/useHeroParallax";
-
-// Orbit nodes showcase the mainnet chains only (the network switcher up in
-// the header still lists every entry, testnets included) — this keeps the
-// hero visual as a clean "multi-chain" marketing shot.
-const ORBIT_NODES = [
-  ...NETWORKS.filter((network) => network.type === "mainnet").map((network) => ({
-    id: network.id,
-    name: network.name,
-    iconUrl: network.iconUrl,
-    icon: network.icon,
-  })),
-  { id: "more", name: "More chains soon", iconUrl: null, isMore: true },
-];
-
-function HeroVisual() {
-  return (
-    <div className="relative mx-auto flex max-w-xs flex-col items-center gap-4 sm:max-w-none sm:pr-16">
-      <div className="relative z-0 flex h-56 w-56 items-center justify-center sm:h-64 sm:w-64">
-        {/* Layered glow behind the mark */}
-        <div className="animate-hero-pulse-glow absolute inset-0 rounded-full bg-accent-purple/25 blur-2xl" />
-        <div className="absolute inset-6 rounded-full bg-accent-gold/15 blur-2xl" />
-
-        {/* Slowly rotating orbit ring with chain nodes + energy lines */}
-        <ChainOrbit nodes={ORBIT_NODES} />
-
-        {/* Static outer ring for depth */}
-        <div className="absolute inset-8 rounded-full border border-white/5" />
-
-        {/* Centerpiece — the Bagua mark, untouched, just orchestrated */}
-        <HeroLogo />
-      </div>
-
-      {/* Live stats */}
-      <HeroStats />
-    </div>
-  );
-}
 
 export default function Hero({ onLaunchClick, onDocsClick }) {
   const heroRef = useRef(null);
@@ -61,15 +21,21 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
         <HeroBackground />
       </div>
 
-      <div className="relative grid gap-6 p-6 sm:grid-cols-2 sm:items-center">
+      <div className="relative flex flex-col gap-6 p-6">
         <div>
           <LiveBadge />
 
           <h1 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
             Build Once.
             <br />
-            <span className="text-accent-gold">Launch</span> Anywhere.
+            <span className="text-accent-gold">Launch</span>
+            <br />
+            Anywhere.
           </h1>
+
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60 sm:text-base">
+            The ultimate platform to launch, trade, and grow meme tokens.
+          </p>
 
           <div className="mt-5 flex flex-wrap gap-3">
             <RippleButton
@@ -94,7 +60,17 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
           </div>
         </div>
 
-        <HeroVisual />
+        {/* Hero visual — the hand + coin artwork, full width, glow behind it */}
+        <div className="relative -my-4 flex items-center justify-center">
+          <div className="animate-hero-pulse-glow pointer-events-none absolute inset-0 m-auto h-2/3 w-2/3 rounded-full bg-accent-gold/25 blur-3xl" />
+          <img
+            src="/hero-hand.png"
+            alt="Bagua coin held in a robotic hand"
+            className="hero-parallax-logo animate-hero-float relative w-full max-w-md drop-shadow-[0_0_35px_rgba(245,179,36,0.35)]"
+          />
+        </div>
+
+        <HeroStats />
       </div>
     </section>
   );
