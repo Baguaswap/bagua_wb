@@ -13,31 +13,26 @@ const HERO_STATS = [
   { id: "assets", label: "Assets Protected", value: "Soon", icon: ShieldCheckIcon, live: false },
 ];
 
-function HeroStatCell({ icon: Icon, label, value, live }) {
-  return (
-    <div className="flex items-center gap-2">
-      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-purple/15 text-accent-violet">
-        <Icon width="13" height="13" />
-      </div>
-      <div className="min-w-0">
-        <p className="truncate text-[9px] leading-none text-white/50">{label}</p>
-        <p
-          className={`font-display text-xs font-bold leading-tight sm:text-sm ${
-            live ? "text-white" : "text-white/40"
-          }`}
-        >
-          {value}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export default function HeroStats() {
   return (
-    <div className="group z-20 grid w-full max-w-xs grid-cols-2 gap-x-3 gap-y-3 rounded-xl bg-bg-card card-border p-3 shadow-glow transition-all duration-300 hover:border-white/20 hover:shadow-[0_0_45px_rgba(139,92,246,0.4)] sm:absolute sm:-right-8 sm:-top-3 sm:w-44 sm:max-w-none">
-      {HERO_STATS.map((stat) => (
-        <HeroStatCell key={stat.id} {...stat} />
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {HERO_STATS.map(({ id, icon: Icon, label, value, live }) => (
+        <div
+          key={id}
+          className="flex flex-col items-center gap-2 rounded-xl bg-bg-card card-border py-4 text-center transition-colors duration-200 hover:border-white/20"
+        >
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-purple/15 text-accent-violet">
+            <Icon width="16" height="16" />
+          </div>
+          <p className="text-xs text-white/50">{label}</p>
+          <p
+            className={`font-display text-sm font-bold leading-none ${
+              live ? "text-white" : "text-accent-gold"
+            }`}
+          >
+            {value}
+          </p>
+        </div>
       ))}
     </div>
   );
