@@ -21,7 +21,19 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
         <HeroBackground />
       </div>
 
-      <div className="relative flex flex-col gap-5 p-5">
+      {/* Hero visual — hand + coin artwork. Positioned relative to the whole
+          card (not just the text row) so it's bigger and sits behind the
+          stats row too, stretching into the bottom-right corner. */}
+      <div className="pointer-events-none absolute -right-4 -bottom-4 top-0 w-[72%] sm:-right-6 sm:w-[64%]">
+        <div className="animate-hero-pulse-glow absolute right-[8%] top-[8%] h-[45%] w-[45%] rounded-full bg-accent-gold/25 blur-3xl" />
+        <img
+          src="/hero-hand.png"
+          alt="Bagua coin held in a robotic hand"
+          className="hero-parallax-logo animate-hero-float relative h-full w-full object-contain object-right-bottom drop-shadow-[0_0_35px_rgba(245,179,36,0.4)]"
+        />
+      </div>
+
+      <div className="relative z-10 flex flex-col gap-5 p-5">
         <div className="relative">
           <div className="relative z-10 max-w-[64%] sm:max-w-[56%]">
             <LiveBadge />
@@ -59,19 +71,6 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
                 View Docs
               </RippleButton>
             </div>
-          </div>
-
-          {/* Hero visual — hand + coin artwork. Absolutely positioned so it
-              scales off its OWN box (not squeezed by the text column) and is
-              free to sit large/overlapping like the reference, while overflow
-              on the section clips anything that spills past the card edge. */}
-          <div className="pointer-events-none absolute -right-3 top-1/2 h-[150%] w-[46%] -translate-y-1/2 sm:h-[160%] sm:w-[42%]">
-            <div className="animate-hero-pulse-glow absolute inset-0 m-auto h-2/3 w-2/3 rounded-full bg-accent-gold/25 blur-3xl" />
-            <img
-              src="/hero-hand.png"
-              alt="Bagua coin held in a robotic hand"
-              className="hero-parallax-logo animate-hero-float relative h-full w-full object-contain drop-shadow-[0_0_35px_rgba(245,179,36,0.4)]"
-            />
           </div>
         </div>
 
