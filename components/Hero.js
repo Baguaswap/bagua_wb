@@ -33,7 +33,7 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
         />
       </div>
 
-      <div className="relative z-10 flex flex-col gap-5 p-5">
+      <div className="relative z-10 flex flex-col gap-3 p-4">
         <div className="relative">
           <div className="relative z-10 max-w-[64%] sm:max-w-[56%]">
             <LiveBadge />
@@ -45,10 +45,6 @@ export default function Hero({ onLaunchClick, onDocsClick }) {
               <br />
               Anywhere.
             </h1>
-
-            <p className="mt-3 text-xs leading-relaxed text-white/60 sm:text-base">
-              The ultimate platform to launch, trade, and grow meme tokens.
-            </p>
 
             <div className="mt-4 flex flex-wrap gap-2">
               <RippleButton
