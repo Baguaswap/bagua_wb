@@ -83,11 +83,14 @@ function BurnBarChart({ data }) {
   const barWidth = Math.min(20, slot * 0.5);
 
   return (
-    <div className="relative mt-3 overflow-hidden rounded-lg card-border bg-black/20 p-3">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-accent-purple/[0.08] to-transparent" />
+    <div className="relative mt-3 overflow-hidden rounded-xl card-border bg-gradient-to-b from-[#0D0D11] to-black/40 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+      {/* Ambient luxury glow */}
+      <div className="pointer-events-none absolute -right-10 -top-14 h-36 w-36 rounded-full bg-accent-gold/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-14 -left-8 h-32 w-32 rounded-full bg-accent-purple/25 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,179,36,0.06),transparent_60%)]" />
 
       <div className="relative flex gap-2">
-        <div className="flex h-24 flex-col justify-between py-0.5 text-right text-[9px] text-white/30">
+        <div className="flex h-24 flex-col justify-between py-0.5 text-right text-[9px] font-medium tabular-nums text-white/35">
           {ticks.map((t, i) => (
             <span key={i}>{formatK(t)}</span>
           ))}
@@ -101,9 +104,23 @@ function BurnBarChart({ data }) {
           >
             <defs>
               <linearGradient id="burnBarGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#F5B324" />
+                <stop offset="0%" stopColor="#FFD873" />
+                <stop offset="45%" stopColor="#F5B324" />
                 <stop offset="100%" stopColor="#8B5CF6" />
               </linearGradient>
+              <linearGradient id="burnBarSheen" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
+                <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+              </linearGradient>
+              <filter id="burnBarGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
             </defs>
 
             {[0, 0.25, 0.5, 0.75, 1].map((f) => (
@@ -123,23 +140,45 @@ function BurnBarChart({ data }) {
               const cx = padX + slot * i + slot / 2;
               const barH = Math.max((d.value / maxValue) * (h - 4), 2);
               return (
-                <rect
-                  key={i}
-                  x={cx - barWidth / 2}
-                  y={h - barH}
-                  width={barWidth}
-                  height={barH}
-                  rx="2.5"
-                  fill="url(#burnBarGradient)"
-                  className="transition-opacity duration-200 hover:opacity-80"
-                />
+                <g key={i} className="transition-opacity duration-200 hover:opacity-90">
+                  {/* soft glow echo beneath the bar */}
+                  <rect
+                    x={cx - barWidth / 2}
+                    y={h - barH}
+                    width={barWidth}
+                    height={barH}
+                    rx="3"
+                    fill="#F5B324"
+                    opacity="0.35"
+                    filter="url(#burnBarGlow)"
+                  />
+                  {/* crisp bar on top */}
+                  <rect
+                    x={cx - barWidth / 2}
+                    y={h - barH}
+                    width={barWidth}
+                    height={barH}
+                    rx="3"
+                    fill="url(#burnBarGradient)"
+                  />
+                  {/* glossy top cap highlight */}
+                  <rect
+                    x={cx - barWidth / 2}
+                    y={h - barH}
+                    width={barWidth}
+                    height={Math.min(barH, 3)}
+                    rx="2"
+                    fill="url(#burnBarSheen)"
+                    opacity="0.8"
+                  />
+                </g>
               );
             })}
 
-            <line x1="0" x2={w} y1={h} y2={h} stroke="rgba(255,255,255,0.14)" strokeWidth="1" />
+            <line x1="0" x2={w} y1={h} y2={h} stroke="rgba(255,255,255,0.16)" strokeWidth="1" />
           </svg>
 
-          <div className="mt-1 flex text-[9px] text-white/35">
+          <div className="mt-1 flex text-[9px] font-medium text-white/40">
             {data.map((d, i) => (
               <span key={i} style={{ width: `${100 / data.length}%` }} className="text-center">
                 {d.showLabel ? d.label : ""}
