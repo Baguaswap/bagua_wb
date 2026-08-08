@@ -1,21 +1,32 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ChevronDownIcon } from "@/components/icons";
+import { useMemo, useState } from "react";
 
 const TIMEFRAMES = [
-  { key: "1m", label: "1 Menit", axisFrom: "20m ago" },
-  { key: "5m", label: "5 Menit", axisFrom: "1j 40m ago" },
-  { key: "15m", label: "15 Menit", axisFrom: "5j ago" },
-  { key: "30m", label: "30 Menit", axisFrom: "10j ago" },
-  { key: "1h", label: "1 Jam", axisFrom: "20j ago" },
-  { key: "4h", label: "4 Jam", axisFrom: "80j ago" },
-  { key: "12h", label: "12 Jam", axisFrom: "10 hari lalu" },
-  { key: "24h", label: "24 Jam", axisFrom: "20 hari lalu" },
-  { key: "1w", label: "Seminggu", axisFrom: "20 minggu lalu" },
-  { key: "1M", label: "Sebulan", axisFrom: "20 bulan lalu" },
-  { key: "all", label: "All Time", axisFrom: "Sejak awal" },
+  { key: "1D", label: "1D" },
+  { key: "1W", label: "1W" },
+  { key: "1M", label: "1M" },
+  { key: "1Y", label: "1Y" },
+  { key: "ALL", label: "ALL" },
 ];
+
+const TIMEFRAME_LABELS = {
+  "1D": ["09.00", "10.00", "11.00", "12.00", "13.00", "14.00", "15.00", "16.00", "Now"],
+  "1W": ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Ming"],
+  "1M": ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"],
+  "1Y": ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
+  ALL: ["2022", "2023", "2024", "2025", "2026"],
+};
+
+// Which x-axis labels actually get printed under the bars, per timeframe
+// (dense sets like 1D/1Y would overlap on a phone screen if we show all of them).
+const TIMEFRAME_LABEL_STEP = {
+  "1D": 2,
+  "1W": 1,
+  "1M": 1,
+  "1Y": 3,
+  ALL: 1,
+};
 
 // Deterministic seeded RNG so switching timeframes always gives the same
 // look for that timeframe (no re-randomizing on every render).
@@ -38,175 +49,112 @@ function mulberry32(seed) {
   };
 }
 
-function generateCandles(timeframeKey, count = 20) {
+function generateBarData(timeframeKey) {
+  const labels = TIMEFRAME_LABELS[timeframeKey];
+  const step = TIMEFRAME_LABEL_STEP[timeframeKey];
   const rand = mulberry32(hashSeed(timeframeKey));
-  let base = 20 + rand() * 15;
-  const candles = [];
-  for (let i = 0; i < count; i++) {
-    const drift = 1.5 + rand() * 5;
-    const noise = (rand() - 0.45) * 9;
-    const open = base;
-    const close = Math.max(4, open + drift + noise);
-    const high = Math.max(open, close) + rand() * 5;
-    const low = Math.max(2, Math.min(open, close) - rand() * 5);
-    candles.push({ open, close, high, low });
-    base = close;
-  }
-  return candles;
+  let base = 4000 + rand() * 4000;
+
+  return labels.map((label, i) => {
+    base = Math.max(2000, base + (rand() - 0.35) * 9000);
+    return {
+      label,
+      value: Math.round(base),
+      showLabel: i % step === 0 || i === labels.length - 1,
+    };
+  });
 }
 
-function TimeframeDropdown({ value, onChange }) {
-  const [open, setOpen] = useState(false);
-  const wrapRef = useRef(null);
-  const current = TIMEFRAMES.find((t) => t.key === value) ?? TIMEFRAMES[7];
+function formatK(value) {
+  if (value >= 1000) {
+    const k = value / 1000;
+    return `${k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)}K`;
+  }
+  return `${value}`;
+}
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (wrapRef.current && !wrapRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
-  }, []);
+function BurnBarChart({ data }) {
+  const w = 300;
+  const h = 100;
+  const padX = 4;
+  const maxValue = Math.max(...data.map((d) => d.value));
+  const ticks = [1, 0.75, 0.5, 0.25, 0].map((f) => Math.round(maxValue * f));
+  const slot = (w - padX * 2) / data.length;
+  const barWidth = Math.min(20, slot * 0.5);
 
   return (
-    <div ref={wrapRef} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        className="flex items-center gap-1 rounded-lg card-border bg-bg-card px-2.5 py-1 text-xs font-medium text-white/80 transition-colors hover:border-white/20 hover:bg-white/5 active:scale-95"
-      >
-        {current.label}
-        <ChevronDownIcon
-          width="12"
-          height="12"
-          className={`text-white/50 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
+    <div className="relative mt-3 overflow-hidden rounded-lg card-border bg-black/20 p-3">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-accent-purple/[0.08] to-transparent" />
 
-      {open && (
-        <div
-          role="listbox"
-          className="absolute right-0 top-[calc(100%+6px)] z-20 max-h-64 w-36 overflow-y-auto rounded-xl card-border bg-bg-panel p-1 shadow-xl"
-        >
-          {TIMEFRAMES.map((tf) => (
-            <button
-              key={tf.key}
-              type="button"
-              role="option"
-              aria-selected={tf.key === value}
-              onClick={() => {
-                onChange(tf.key);
-                setOpen(false);
-              }}
-              className={`block w-full rounded-lg px-3 py-1.5 text-left text-xs font-medium transition-colors ${
-                tf.key === value
-                  ? "bg-accent-purple text-white"
-                  : "text-white/70 hover:bg-white/5 hover:text-white"
-              }`}
-            >
-              {tf.label}
-            </button>
+      <div className="relative flex gap-2">
+        <div className="flex h-24 flex-col justify-between py-0.5 text-right text-[9px] text-white/30">
+          {ticks.map((t, i) => (
+            <span key={i}>{formatK(t)}</span>
           ))}
         </div>
-      )}
-    </div>
-  );
-}
 
-function BurnCandlestick({ data, axisFrom }) {
-  const w = 300;
-  const h = 96;
-  const padX = 4;
-  const high = Math.max(...data.map((d) => d.high));
-  const low = Math.min(...data.map((d) => d.low));
-  const range = high - low || 1;
-  const slot = (w - padX * 2) / data.length;
-  const bodyWidth = Math.min(8, slot * 0.55);
+        <div className="min-w-0 flex-1">
+          <svg
+            viewBox={`0 0 ${w} ${h}`}
+            className="h-24 w-full overflow-visible"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="burnBarGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#F5B324" />
+                <stop offset="100%" stopColor="#8B5CF6" />
+              </linearGradient>
+            </defs>
 
-  const y = (v) => h - ((v - low) / range) * h;
-
-  return (
-    <div className="relative mt-3 overflow-hidden rounded-lg card-border bg-black/20 p-2">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-accent-purple/[0.08] to-transparent" />
-      <svg
-        viewBox={`0 0 ${w} ${h}`}
-        className="relative h-24 w-full overflow-visible"
-        preserveAspectRatio="none"
-      >
-        {[0.25, 0.5, 0.75].map((f) => (
-          <line
-            key={f}
-            x1="0"
-            x2={w}
-            y1={h * f}
-            y2={h * f}
-            stroke="rgba(255,255,255,0.06)"
-            strokeWidth="1"
-            strokeDasharray="3 4"
-          />
-        ))}
-
-        {data.map((d, i) => {
-          const cx = padX + slot * i + slot / 2;
-          const up = d.close >= d.open;
-          const color = up ? "#22C55E" : "#EF4444";
-          const bodyTop = y(Math.max(d.open, d.close));
-          const bodyBottom = y(Math.min(d.open, d.close));
-          const bodyHeight = Math.max(bodyBottom - bodyTop, 1.5);
-
-          return (
-            <g key={i} className="transition-opacity duration-200 hover:opacity-80">
+            {[0, 0.25, 0.5, 0.75, 1].map((f) => (
               <line
-                x1={cx}
-                x2={cx}
-                y1={y(d.high)}
-                y2={y(d.low)}
-                stroke={color}
+                key={f}
+                x1="0"
+                x2={w}
+                y1={h * f}
+                y2={h * f}
+                stroke="rgba(255,255,255,0.06)"
                 strokeWidth="1"
-                opacity="0.65"
+                strokeDasharray="3 4"
               />
-              <rect
-                x={cx - bodyWidth / 2}
-                y={bodyTop}
-                width={bodyWidth}
-                height={bodyHeight}
-                rx="1.5"
-                fill={color}
-                opacity={up ? 0.95 : 0.85}
-              />
-            </g>
-          );
-        })}
-      </svg>
+            ))}
 
-      <div className="mt-1 flex items-center justify-between text-[10px] text-white/35">
-        <span>{axisFrom}</span>
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-green" /> Naik
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-red" /> Turun
-          </span>
+            {data.map((d, i) => {
+              const cx = padX + slot * i + slot / 2;
+              const barH = Math.max((d.value / maxValue) * (h - 4), 2);
+              return (
+                <rect
+                  key={i}
+                  x={cx - barWidth / 2}
+                  y={h - barH}
+                  width={barWidth}
+                  height={barH}
+                  rx="2.5"
+                  fill="url(#burnBarGradient)"
+                  className="transition-opacity duration-200 hover:opacity-80"
+                />
+              );
+            })}
+
+            <line x1="0" x2={w} y1={h} y2={h} stroke="rgba(255,255,255,0.14)" strokeWidth="1" />
+          </svg>
+
+          <div className="mt-1 flex text-[9px] text-white/35">
+            {data.map((d, i) => (
+              <span key={i} style={{ width: `${100 / data.length}%` }} className="text-center">
+                {d.showLabel ? d.label : ""}
+              </span>
+            ))}
+          </div>
         </div>
-        <span>Sekarang</span>
       </div>
     </div>
   );
 }
 
 export default function BurnStats() {
-  const [timeframe, setTimeframe] = useState("24h");
-  const active = TIMEFRAMES.find((t) => t.key === timeframe) ?? TIMEFRAMES[7];
-  const candles = useMemo(() => generateCandles(timeframe, 20), [timeframe]);
+  const [timeframe, setTimeframe] = useState("1D");
+  const data = useMemo(() => generateBarData(timeframe), [timeframe]);
 
   return (
     <div className="rounded-xl bg-bg-card card-border p-4">
@@ -232,11 +180,26 @@ export default function BurnStats() {
       </div>
 
       <div className="mt-3 flex items-center justify-between">
-        <p className="text-[11px] text-white/40">Grafik burn per periode</p>
-        <TimeframeDropdown value={timeframe} onChange={setTimeframe} />
+        <p className="text-xs font-medium text-white/60">$BAGUA Burn Activity</p>
+        <div className="flex gap-1 rounded-lg bg-black/20 p-0.5">
+          {TIMEFRAMES.map((tf) => (
+            <button
+              key={tf.key}
+              type="button"
+              onClick={() => setTimeframe(tf.key)}
+              className={`rounded-md px-2 py-1 text-[11px] font-semibold transition-colors ${
+                tf.key === timeframe
+                  ? "bg-accent-purple text-white"
+                  : "text-white/50 hover:text-white/80"
+              }`}
+            >
+              {tf.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <BurnCandlestick data={candles} axisFrom={active.axisFrom} />
+      <BurnBarChart data={data} />
     </div>
   );
 }
