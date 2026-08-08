@@ -127,4 +127,7 @@ export default function BurnStats() {
         </div>
       </div>
 
-      <Bur
+      <BurnCandlestick data={CANDLE_DATA} />
+    </div>
+  );
+}
