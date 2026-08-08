@@ -83,11 +83,10 @@ function BurnBarChart({ data }) {
   const barWidth = Math.min(20, slot * 0.5);
 
   return (
-    <div className="relative mt-3 overflow-hidden rounded-xl card-border bg-gradient-to-b from-[#0D0D11] to-black/40 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-      {/* Ambient luxury glow */}
-      <div className="pointer-events-none absolute -right-10 -top-14 h-36 w-36 rounded-full bg-accent-gold/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-14 -left-8 h-32 w-32 rounded-full bg-accent-purple/25 blur-3xl" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,179,36,0.06),transparent_60%)]" />
+    <div className="relative mt-3 overflow-hidden rounded-xl card-border bg-[#060607] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+      {/* Ambient glow — same warm gold treatment as the hero banner */}
+      <div className="pointer-events-none absolute right-[10%] top-[10%] h-28 w-28 rounded-full bg-accent-gold/20 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,179,36,0.10),transparent_65%)]" />
 
       <div className="relative flex gap-2">
         <div className="flex h-24 flex-col justify-between py-0.5 text-right text-[9px] font-medium tabular-nums text-white/35">
@@ -104,13 +103,13 @@ function BurnBarChart({ data }) {
           >
             <defs>
               <linearGradient id="burnBarGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#FFD873" />
-                <stop offset="45%" stopColor="#F5B324" />
-                <stop offset="100%" stopColor="#8B5CF6" />
+                <stop offset="0%" stopColor="#FFDE9E" />
+                <stop offset="35%" stopColor="#F5B324" />
+                <stop offset="100%" stopColor="#8A5A0F" />
               </linearGradient>
               <linearGradient id="burnBarSheen" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
-                <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.35" />
+                <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.4" />
                 <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
               </linearGradient>
               <filter id="burnBarGlow" x="-60%" y="-60%" width="220%" height="220%">
@@ -141,7 +140,7 @@ function BurnBarChart({ data }) {
               const barH = Math.max((d.value / maxValue) * (h - 4), 2);
               return (
                 <g key={i} className="transition-opacity duration-200 hover:opacity-90">
-                  {/* soft glow echo beneath the bar */}
+                  {/* soft gold glow echo beneath the bar */}
                   <rect
                     x={cx - barWidth / 2}
                     y={h - barH}
@@ -228,7 +227,7 @@ export default function BurnStats() {
               onClick={() => setTimeframe(tf.key)}
               className={`rounded-md px-2 py-1 text-[11px] font-semibold transition-colors ${
                 tf.key === timeframe
-                  ? "bg-accent-purple text-white"
+                  ? "bg-accent-gold text-bg"
                   : "text-white/50 hover:text-white/80"
               }`}
             >
